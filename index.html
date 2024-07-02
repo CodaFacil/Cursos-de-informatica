@@ -1,195 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial de CRUD com Spring Boot</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cursos Básicos de Informática</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Como Criar uma Aplicação CRUD com Spring Boot</h1>
+<header>
+<h1>Cursos Básicos de Informática</h1>
+<nav>
+<ul>
+<li><a href="#">Início</a></li>
+<li><a href="/cursos">Cursos</a></li>
+<li><a href="#">Sobre Nós</a></li>
+<li><a href="#">Contato</a></li>
+</ul>
+</nav>
+</header>
 
-    <h2>Passo 1: Configuração do Projeto</h2>
-    <h3>Criar um Novo Projeto Spring Boot:</h3>
-    <p>Acesse o site <a href="https://start.spring.io/">Spring Initializr</a>.</p>
-    <p>Configure o projeto com as seguintes opções:</p>
-    <ul>
-        <li>Projeto: Projeto Maven</li>
-        <li>Linguagem: Java</li>
-        <li>Spring Boot: última versão estável</li>
-        <li>Grupo: com.exemplo</li>
-        <li>Artefato: crud</li>
-        <li>Nome: Crud</li>
-        <li>Nome do pacote: com.exemplo.crud</li>
-        <li>Embalagem: Jar</li>
-        <li>Java: 11 ou superior (depende do seu ambiente)</li>
-    </ul>
-    <h3>Adicionar Dependências:</h3>
-    <p>No Spring Initializr, adicione as seguintes dependências:</p>
-    <ul>
-        <li>Spring Web</li>
-        <li>Spring Data JPA</li>
-        <li>Thymeleaf</li>
-        <li>MySQL Driver</li>
-    </ul>
-    <p>Clique em "Gerar" para baixar o projeto.</p>
-    <h3>Importar o Projeto no IDE:</h3>
-    <p>Importe o projeto baixado em seu IDE preferido (IntelliJ, Eclipse, etc).</p>
+<section id="banner">
+    <h2>Aprenda Informática de Forma Fácil e Gratuita!</h2>
+</section>
 
-    <h2>Passo 2: Configuração do Banco de Dados MySQL</h2>
-    <h3>Configurar o Banco de Dados:</h3>
-    <p>Crie um banco de dados no MySQL, por exemplo, <code>crud_db</code>.</p>
-    <h3>Configurar o <code>application.properties</code>:</h3>
-    <p>Abra o arquivo <code>src/main/resources/application.properties</code> e configure as seguintes propriedades:</p>
-    <pre>
-        spring.datasource.url=jdbc:mysql://localhost:3306/crud_db
-        spring.datasource.username=seu_usuario
-        spring.datasource.password=sua_senha
-        spring.jpa.hibernate.ddl-auto=update
-        spring.jpa.show-sql=true
-        spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
-    </pre>
+<section id="cursos">
+    <h2>Nossos Cursos</h2>
+    <div class="curso">
+        <h3>Introdução ao Windows</h3>
+        <p>Aprenda os conceitos básicos do sistema operacional Windows.</p>
+    </div>
+    <div class="curso">
+        <h3>Microsoft Office</h3>
+        <p>Domine o Word, Excel e PowerPoint.</p>
+    </div>
+    <div class="curso">
+        <h3>Navegação na Internet</h3>
+        <p>Saiba como navegar na internet com segurança.</p>
+    </div>
+</section>
 
-    <h2>Passo 3: Criar uma Entidade JPA</h2>
-    <h3>Criar uma Classe de Entidade:</h3>
-    <p>Crie um pacote <code>com.exemplo.crud.model</code> e adicione uma classe chamada <code>Produto</code>:</p>
-    <pre>
-package com.exemplo.crud.model;
-import javax.persistence.*;
+<footer>
+    <p>&copy; 2024 Cursos Básicos de Informática</p>
+</footer>
 
-@Entity
-public class Produto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
-    private Double preco;
+<script src="script.js"></script>
 
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Double getPreco() {
-        return preco;
-    }
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
-}
-    </pre>
-
-    <h2>Passo 4: Criar o Repositório JPA</h2>
-    <h3>Crie uma Interface de Repositório:</h3>
-    <p>Crie um pacote <code>com.exemplo.crud.repository</code> e adicione uma interface chamada <code>ProdutoRepository</code>:</p>
-    <pre>
-package com.exemplo.crud.repository;
-
-import com.exemplo.crud.model.Produto;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-}
-    </pre>
-
-    <h2>Passo 5: Criar o Serviço</h2>
-    <h3>Criar uma Classe de Serviço:</h3>
-    <p>Crie um pacote <code>com.exemplo.crud.service</code> e adicione uma classe chamada <code>ProdutoService</code>:</p>
-    <pre>
-package com.exemplo.crud.service;
-
-import com.exemplo.crud.model.Produto;
-import com.exemplo.crud.repository.ProdutoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-
-@Service
-public class ProdutoService {
-    @Autowired
-    private ProdutoRepository produtoRepository;
-
-    public List<Produto> findAll() {
-        return produtoRepository.findAll();
-    }
-
-    public Optional<Produto> findById(Long id) {
-        return produtoRepository.findById(id);
-    }
-
-    public Produto save(Produto produto) {
-        return produtoRepository.save(produto);
-    }
-
-    public void deleteById(Long id) {
-        produtoRepository.deleteById(id);
-    }
-}
-    </pre>
-
-    <h2>Passo 6: Criar o Controlador</h2>
-    <h3>Crie uma Classe de Controlador:</h3>
-    <p>Crie um pacote <code>com.exemplo.crud.controller</code> e adicione uma classe chamada <code>ProdutoController</code>:</p>
-    <pre>
-package com.exemplo.crud.controller;
-
-import com.exemplo.crud.model.Produto;
-import com.exemplo.crud.service.ProdutoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-@Controller
-public class ProdutoController {
-    @Autowired
-    private ProdutoService produtoService;
-
-    @GetMapping("/")
-    public String viewHomePage(Model model) {
-        model.addAttribute("listaProdutos", produtoService.findAll());
-        return "index";
-    }
-
-    @GetMapping("/novo")
-    public String showNewProdutoForm(Model model) {
-        Produto produto = new Produto();
-        model.addAttribute("produto", produto);
-        return "novo_produto";
-    }
-
-    @PostMapping("/salvar")
-    public String saveProduto(@ModelAttribute("produto") Produto produto) {
-        produtoService.save(produto);
-        return "redirect:/";
-    }
-
-    @GetMapping("/editar/{id}")
-    public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
-        Produto produto = produtoService.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
-        model.addAttribute("produto", produto);
-        return "editar_produto";
-    }
-
-    @GetMapping("/deletar/{id}")
-    public String deleteProduto(@PathVariable(value = "id") long id) {
-        produtoService.deleteById(id);
-        return "redirect:/";
-    }
-}
-    </pre>
 </body>
 </html>
-
